@@ -14,14 +14,14 @@
 <!--[if gt IE 8]><!-->
 <link rel="stylesheet" href="/css/side-menu.css">
 <!--<![endif]-->
+
+<script src="/js/react/react.js"></script>
+<script src="/js/react/react-dom.js"></script>
+<script src="/js/react/browser.js"></script>
+<script src="/js/react/jquery.min.js"></script>
+<script src="/js/react/remarkable.min.js"></script>
 </head>
 <body>
-
-
-
-
-
-
 	<div id="layout">
 		<!-- Menu toggle -->
 		<a href="#menu" id="menuLink" class="menu-link"> <!-- Hamburger icon -->
@@ -30,12 +30,15 @@
 
 		<div id="menu">
 			<div class="pure-menu">
-				<a class="pure-menu-heading" href="/autor.html">Cadastros</a>
+				<a class="pure-menu-heading" href="#">Autores</a>
 
 				<ul class="pure-menu-list">
-					<li class="pure-menu-item"><a href="#" class="pure-menu-link">Autores</a></li>
+					<li class="pure-menu-item"><a href="/autor.html" class="pure-menu-link">Cadastro</a></li>
 				</ul>
-			</div>
+				<ul class="pure-menu-list">
+					<li class="pure-menu-item"><a href="#" class="pure-menu-link">Lista</a></li>
+				</ul>
+			</div> 	
 		</div>
 
 		<div id="main">
@@ -43,39 +46,76 @@
 				<h1>Cadastro de autores</h1>
 			</div>
 
-			<div class="content">
-				<form class="pure-form pure-form-aligned">
-					<fieldset>
-						<div class="pure-control-group">
-							<label for="name">Nome</label> <input id="nome" type="text"
-								placeholder="nome do autor">
-						</div>
-
-						<div class="pure-control-group">
-							<label for="email">Email</label> <input id="email"
-								type="email" placeholder="email">
-						</div>
-
-						<div class="pure-control-group">
-							<label for="senha">Senha</label> <input id="senha"
-								type="password" placeholder="senha do autor">
-						</div>
-
-						<div class="pure-controls">
-							<button type="submit" class="pure-button pure-button-primary">Submit</button>
-						</div>
-					</fieldset>
-				</form>
-			</div>
+			<div id="content" class="content"></div>
 		</div>
 	</div>
 
+	<script type="text/babel">
+			var CustomSubmit = React.createClass({
+				render: function() {
+					return (
+						<div className="pure-controls">
+							<input type="submit" className="pure-button pure-button-primary" value={this.props.label} />
+						</div>
+					);
+				}
+			});
 
+			var CustomInputText = React.createClass({
+				render: function() {
+			    	return (
+						<div className="pure-control-group">
+							<label htmlFor={this.props.id}>{this.props.label}</label> 
+							<input id={this.props.id} type={this.props.type} name={this.props.name}
+								value={this.props.value} placeholder={this.props.placeholder} onChange={this.props.onChangeFunction} />
+						</div>
+					);
+				}		
+			});
 
+			var AutorForm = React.createClass({
+ 				getInitialState: function() {
+    				return {nome: '', email: '', senha: ''};
+  				},
 
+				handleNomeChange: function(e) {
+					this.setState({nome: e.target.value});
+				},
 
-	<script src="js/ui.js"></script>
+				handleEmailChange: function(e) {
+					this.setState({email: e.target.value});
+				},
 
+				handleSenhaChange: function(e) {
+					this.setState({senha: e.target.value});
+				},
 
+			  handleSubmit: function(e) {
+			    e.preventDefault();
+			    var nome = this.state.nome.trim();
+			    var email = this.state.email.trim();
+				var senha = this.state.senha.trim();
+			    this.props.onAutorSubmit({nome: nome, email: email, senha: senha});
+			    this.setState({nome: '', email: '', senha: ''});
+			  },
+			  render: function() {
+			    return (
+			      <div className="autorForm">
+      					<form className="pure-form pure-form-aligned" onSubmit={this.handleSubmit}>
+        					<CustomInputText id="nome" name="nome" label="Nome: " type="text" value={this.state.nome} placeholder="Nome do Autor" onChangeFunction={this.handlerNomeChange} />
+							<CustomInputText id="email" name="email" label="Email: " type="email" value={this.state.email} placeholder="Email do Autor" onChangeFunction={this.handlerEmailChange} />
+							<CustomInputText id="senha" name="senha" label="Senha: " type="password" value={this.state.password} placeholder="Senha do Autor" onChangeFunction={this.handlerSenhaChange}/>
+        					<CustomSubmit label="Enviar" />
+      					</form>			        
+			      </div>
+			    );
+			  }
+			});
+
+			ReactDOM.render(
+			  <AutorForm />,
+			  document.getElementById('content')
+			);
+	</script>
 </body>
 </html>
