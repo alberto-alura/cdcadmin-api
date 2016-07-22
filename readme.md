@@ -1,6 +1,6 @@
-#Some setup information :).
+#Pequena explicação
 
-##Spring JPA Setup
-You need to change the **application.properties** and configure the login, password and url of your database. 
+Aqui vai rolar um pequeno exemplo de crud usando o Spring MVC como framework web expondo a API e um client baseado no React 
+consumindo. 
   	
 
