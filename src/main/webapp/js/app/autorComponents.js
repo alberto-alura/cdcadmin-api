@@ -49,7 +49,9 @@ var AutorForm = React.createClass({
 	handleSenhaChange: function(e) {
 		this.setState({senha: e.target.value});
 	},
-	
+	handleAtualiza(data){
+		this.props.lista = data;
+	},
 	handleAutorSubmit: function(autor){
 		$.ajax({
 				url: this.props.url,
@@ -58,10 +60,7 @@ var AutorForm = React.createClass({
 				type: 'POST',
 				data: JSON.stringify(autor),
 				success: function(data) {
-				this.setState({data: data});
-				}.bind(this),
-				error: function(xhr, status, err) {
-				console.error(this.props.url, status, err.toString());
+					this.handleAtualiza(data);
 				}.bind(this)
 		});  
 	},
@@ -90,21 +89,8 @@ var AutorForm = React.createClass({
 
 
 var AutorTable = React.createClass({
-	getInitialState : function(){
-		return {lista : []};
-	},
-	componentDidMount: function() {
-		$.ajax({
-	      	url: this.props.url,
-		  	dataType: 'json',
-		  	success: function(data) {
-		  		this.setState({lista: data});
-		  	}.bind(this)
-		});
-	},
-	
 	render: function(){
-		var autorNodes = this.state.lista.map(function(autor){
+		var autorNodes = this.props.lista.map(function(autor){
 			return(
 					<tr key={autor.nome}>
 						<td>{autor.nome}</td>
@@ -129,11 +115,23 @@ var AutorTable = React.createClass({
 });
 
 var AutorBox = React.createClass({
+	getInitialState : function(){
+		return {lista : []};
+	},
+	componentDidMount: function() {
+		$.ajax({
+	      	url: this.props.url,
+		  	dataType: 'json',
+		  	success: function(data) {
+		  		this.setState({lista: data});
+		  	}.bind(this)
+		});
+	},
 	render: function(){
 	return(
 		<div>
 			<AutorForm url="http://localhost:8080/api/autor"/>
-			<AutorTable url="http://localhost:8080/api/autor"/>
+			<AutorTable lista={this.state.lista}/>
 		</div>
 	);
 	}
@@ -141,6 +139,6 @@ var AutorBox = React.createClass({
 
 
 ReactDOM.render(
-  <AutorBox/>,
+  <AutorBox  url="http://localhost:8080/api/autor"/>,
   document.getElementById('content')
 );

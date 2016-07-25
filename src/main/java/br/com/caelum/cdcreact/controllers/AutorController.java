@@ -23,7 +23,7 @@ public class AutorController {
 	@RequestMapping(consumes=MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.POST)
 	public ResponseEntity<?> salva(@Valid @RequestBody Autor autor) {
 		autorDao.save(autor);
-		return ResponseEntity.status(302).header("Location", "/autor").build();
+		return ResponseEntity.status(302).header("Location", "/api/autor").build();
 	}
 
 	@RequestMapping(method = RequestMethod.GET, produces=MediaType.APPLICATION_JSON_VALUE)
