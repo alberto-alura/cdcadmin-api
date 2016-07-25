@@ -25,4 +25,10 @@ public class AutorController {
 		autorDao.save(autor);
 		return ResponseEntity.status(302).header("Location", "/autor").build();
 	}
+
+	@RequestMapping(method = RequestMethod.GET, produces=MediaType.APPLICATION_JSON_VALUE)
+	public Iterable<Autor> lista() {
+		return autorDao.findAll();
+	}
+	
 }
