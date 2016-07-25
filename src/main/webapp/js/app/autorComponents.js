@@ -91,8 +91,18 @@ var AutorForm = React.createClass({
 
 var AutorTable = React.createClass({
 	getInitialState : function(){
-		return {lista :[{nome : "Rolinho", email :  "cp@email.com"}, {nome : "Tatuagem", email :  "cp@email.com"}]};
+		return {lista : []};
 	},
+	componentDidMount: function() {
+		$.ajax({
+	      	url: this.props.url,
+		  	dataType: 'json',
+		  	success: function(data) {
+		  		this.setState({lista: data});
+		  	}.bind(this)
+		});
+	},
+	
 	render: function(){
 		var autorNodes = this.state.lista.map(function(autor){
 			return(
