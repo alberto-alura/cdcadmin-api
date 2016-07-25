@@ -14,7 +14,7 @@ var CustomInputText = React.createClass({
 			<div className="pure-control-group">
 				<label htmlFor={this.props.id}>{this.props.label}</label> 
 				<input id={this.props.id} type={this.props.type} name={this.props.name}
-					value={this.props.valor} placeholder={this.props.placeholder} onChange={this.props.onChangeFunction} />
+					value={this.props.value} placeholder={this.props.placeholder} onChange={this.props.onChangeFunction} />
 			</div>
 		);
 	}		
@@ -56,7 +56,7 @@ var AutorForm = React.createClass({
 				contentType: 'application/json',
 				dataType: 'json',
 				type: 'POST',
-				data: JSON.stringify(comment),
+				data: JSON.stringify(autor),
 				success: function(data) {
 				this.setState({data: data});
 				}.bind(this),
@@ -70,16 +70,17 @@ var AutorForm = React.createClass({
 	    var nome = this.state.nome.trim();
 	    var email = this.state.email.trim();
 		var senha = this.state.senha.trim();
-	    this.props.onAutorSubmit({nome: nome, email: email, senha: senha});
+		
+	    this.handleAutorSubmit({nome: nome, email: email, senha: senha});
 	    this.setState({nome: '', email: '', senha: ''});
 	},
 	render: function() {
     return (
       <div className="autorForm">
 			<form className="pure-form pure-form-aligned" onSubmit={this.handleSubmit}>
-				<CustomInputText id="nome" name="nome" label="Nome: " type="text" valor={this.state.nome} placeholder="Nome do Autor" onChangeFunction={this.handlerNomeChange} />
-				<CustomInputText id="email" name="email" label="Email: " type="text" valor={this.state.email} placeholder="Email do Autor" onChangeFunction={this.handlerEmailChange} />
-				<CustomInputText id="senha" name="senha" label="Senha: " type="password" valor={this.state.senha} placeholder="Senha do Autor" onChangeFunction={this.handlerSenhaChange}/>
+				<CustomInputText id="nome" name="nome" label="Nome: " type="text" value={this.state.nome} placeholder="Nome do Autor" onChangeFunction={this.handleNomeChange} />
+				<CustomInputText id="email" name="email" label="Email: " type="text" value={this.state.email} placeholder="Email do Autor" onChangeFunction={this.handleEmailChange} />
+				<CustomInputText id="senha" name="senha" label="Senha: " type="password" value={this.state.senha} placeholder="Senha do Autor" onChangeFunction={this.handleSenhaChange}/>
 				<CustomSubmit label="Enviar" />
 			</form>			        
       </div>
@@ -88,6 +89,6 @@ var AutorForm = React.createClass({
 });
 
 ReactDOM.render(
-  <AutorForm url="http://localhost:8080/autor" />,
+  <AutorForm url="http://localhost:8080/api/autor" />,
   document.getElementById('content')
 );

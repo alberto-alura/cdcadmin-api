@@ -14,7 +14,7 @@ import br.com.caelum.cdcreact.daos.AutorDao;
 import br.com.caelum.cdcreact.models.Autor;
 
 @RestController
-@RequestMapping("/autor")
+@RequestMapping("/api/autor")
 public class AutorController {
 	
 	@Autowired
