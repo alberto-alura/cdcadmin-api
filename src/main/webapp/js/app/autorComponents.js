@@ -30,6 +30,10 @@ var CustomInputText = React.createClass({
 		PubSub.subscribe('validation-errors-'+this.props.name, function(topicName,msg){			
 			this.setState({errorMsg:msg});
 		}.bind(this));
+		
+		PubSub.subscribe("clear-error", function(topicName,msg){			
+			this.setState({errorMsg:""});
+		}.bind(this));
 	}	
 });
 
@@ -59,6 +63,7 @@ var AutorForm = React.createClass({
 				data: JSON.stringify(autor),
 				success: function(data) {
 					PubSub.publish( 'update-autor-list', data );
+					PubSub.publish( 'clear-error', {});
 				}.bind(this),
 				error: function(response){
 					if(response.status == 400){
