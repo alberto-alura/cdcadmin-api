@@ -1,14 +1,10 @@
 var ErrorHandler = function(errorObject){
 	return {
-		findMessage : function(fieldName) {
-			for(index in errorObject.errors){
-				var error = errorObject.errors[index];
-				if(error.field === fieldName){
-					return error.defaultMessage;
-				}
+		publishErrors : function() {
+			for(index in errorObject.errors){				
+				var error = errorObject.errors[index];				
+				PubSub.publish("validation-errors-"+error.field,error.defaultMessage);
 			}
-			
-			return "nao achou nada";
 		}
 	};
 }

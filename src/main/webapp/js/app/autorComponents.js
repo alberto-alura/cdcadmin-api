@@ -6,18 +6,31 @@ var CustomSubmit = React.createClass({
 			</div>
 		);
 	}
+	
 });
 
-var CustomInputText = React.createClass({
+var CustomInputText = React.createClass({	
+	
+	getInitialState: function() {
+		return {errorMsg: ''};
+	},	
+	
 	render: function() {
     	return (
 			<div className="pure-control-group">
 				<label htmlFor={this.props.id}>{this.props.label}</label> 
 				<input id={this.props.id} type={this.props.type} name={this.props.name}
 					value={this.props.value} placeholder={this.props.placeholder} onChange={this.props.onChangeFunction} />
+				<span className="validation error" id={"error-"+this.props.name}>{this.state.errorMsg}</span>
 			</div>
 		);
-	}		
+	},
+	
+	componentWillMount: function() {
+		PubSub.subscribe('validation-errors-'+this.props.name, function(topicName,msg){			
+			this.setState({errorMsg:msg});
+		}.bind(this));
+	}	
 });
 
 var AutorForm = React.createClass({
@@ -50,8 +63,7 @@ var AutorForm = React.createClass({
 				error: function(response){
 					if(response.status == 400){
 						var errorHandler = ErrorHandler(JSON.parse(response.responseText));
-						//aqui tem que posicionar as mensagens do lado dos campos no formulário
-						errorHandler.findMessage("email");
+						errorHandler.publishErrors();						
 					}
 				}
 		});  
