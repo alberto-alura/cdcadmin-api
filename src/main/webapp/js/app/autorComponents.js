@@ -46,7 +46,14 @@ var AutorForm = React.createClass({
 				data: JSON.stringify(autor),
 				success: function(data) {
 					PubSub.publish( 'update-autor-list', data );
-				}.bind(this)
+				}.bind(this),
+				error: function(response){
+					if(response.status == 400){
+						var errorHandler = ErrorHandler(JSON.parse(response.responseText));
+						//aqui tem que posicionar as mensagens do lado dos campos no formulário
+						errorHandler.findMessage("email");
+					}
+				}
 		});  
 	},
 	handleSubmit: function(e) {

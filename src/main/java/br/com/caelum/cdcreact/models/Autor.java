@@ -5,6 +5,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
 
 @Entity
@@ -16,6 +17,7 @@ public class Autor {
 	@NotBlank
 	private String nome;
 	@NotBlank
+	@Email
 	private String email;
 	@NotBlank
 	private String senha;
