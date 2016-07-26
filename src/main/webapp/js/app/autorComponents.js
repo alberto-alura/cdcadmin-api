@@ -45,7 +45,7 @@ var AutorForm = React.createClass({
 				type: 'POST',
 				data: JSON.stringify(autor),
 				success: function(data) {
-					this.props.newAuthorEvent(data);
+					PubSub.publish( 'update-autor-list', data );
 				}.bind(this)
 		});  
 	},
@@ -83,19 +83,19 @@ var AutorTable = React.createClass({
 					</tr>
 				);
 			}); 
-	return(
-			<table className="pure-table">
-			<thead>
-				<tr>
-					<th>Nome</th>
-					<th>email</th>
-				</tr>
-			</thead>
-			<tbody>
-				{autorNodes}
-			</tbody>
-		</table>
-	);
+			return(
+					<table className="pure-table">
+					<thead>
+						<tr>
+							<th>Nome</th>
+							<th>email</th>
+						</tr>
+					</thead>
+					<tbody>
+						{autorNodes}
+					</tbody>
+				</table>
+			);
 	}
 });
 
@@ -113,15 +113,18 @@ var AutorBox = React.createClass({
 		});
 	},
 	
-	handleNewAuthorEvent : function(newList) {
-		this.setState({lista:newList});
+	componentWillMount: function() {
+		var react = this;
+		PubSub.subscribe( 'update-autor-list', function(topicName,data){
+			react.setState({lista:data});
+		});
 	},
 	
 	
 	render: function(){
 	return(
 		<div>
-			<AutorForm url="http://localhost:8080/api/autor" newAuthorEvent={this.handleNewAuthorEvent}/>
+			<AutorForm url="http://localhost:8080/api/autor"/>
 			<AutorTable lista={this.state.lista}/>
 		</div>
 	);
