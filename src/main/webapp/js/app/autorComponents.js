@@ -20,19 +20,6 @@ var CustomInputText = React.createClass({
 	}		
 });
 
-//var Autor = React.createClass({
-//  	render: function() {
-//  		return (
-//  			<div className="comment">
-//  			<h2 className="commentAuthor">
-//  				{this.props.author}
-//            </h2>
-//        <span dangerouslySetInnerHTML={this.rawMarkup()} />
-//      </div>
-//    );
-//  }
-//});
-
 var AutorForm = React.createClass({
 	getInitialState: function() {
 		return {nome: '', email: '', senha: ''};
@@ -49,9 +36,7 @@ var AutorForm = React.createClass({
 	handleSenhaChange: function(e) {
 		this.setState({senha: e.target.value});
 	},
-	handleAtualiza(data){
-		this.props.lista = data;
-	},
+	
 	handleAutorSubmit: function(autor){
 		$.ajax({
 				url: this.props.url,
@@ -60,7 +45,7 @@ var AutorForm = React.createClass({
 				type: 'POST',
 				data: JSON.stringify(autor),
 				success: function(data) {
-					this.handleAtualiza(data);
+					this.props.newAuthorEvent(data);
 				}.bind(this)
 		});  
 	},
@@ -127,10 +112,16 @@ var AutorBox = React.createClass({
 		  	}.bind(this)
 		});
 	},
+	
+	handleNewAuthorEvent : function(newList) {
+		this.setState({lista:newList});
+	},
+	
+	
 	render: function(){
 	return(
 		<div>
-			<AutorForm url="http://localhost:8080/api/autor"/>
+			<AutorForm url="http://localhost:8080/api/autor" newAuthorEvent={this.handleNewAuthorEvent}/>
 			<AutorTable lista={this.state.lista}/>
 		</div>
 	);
