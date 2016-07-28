@@ -1,22 +1,21 @@
-var CustomSubmit = React.createClass({
-	render: function() {
+class CustomSubmit extends React.Component {
+	render() {
 		return (
 			<div className="pure-controls">
 				<input type="submit" className="pure-button pure-button-primary" value={this.props.label} />
 			</div>
-		);
+		); 
 	}
-	
-});
+}
 
-var CustomInputText = React.createClass({	
+class CustomInputText extends React.Component {
+	constructor(props) {
+		super(props);
+		this.state = {errorMsg: ''};
+	} 
 	
-	getInitialState: function() {
-		return {errorMsg: ''};
-	},	
-	
-	render: function() {
-    	return (
+	render() {
+		return (
 			<div className="pure-control-group">
 				<label htmlFor={this.props.id}>{this.props.label}</label> 
 				<input id={this.props.id} type={this.props.type} name={this.props.name}
@@ -24,9 +23,9 @@ var CustomInputText = React.createClass({
 				<span className="validation error" id={"error-"+this.props.name}>{this.state.errorMsg}</span>
 			</div>
 		);
-	},
+	}
 	
-	componentWillMount: function() {
+	componentWillMount() {
 		PubSub.subscribe('validation-errors-'+this.props.name, function(topicName,msg){			
 			this.setState({errorMsg:msg});
 		}.bind(this));
@@ -34,127 +33,134 @@ var CustomInputText = React.createClass({
 		PubSub.subscribe("clear-error", function(topicName,msg){			
 			this.setState({errorMsg:""});
 		}.bind(this));
-	}	
-});
+	}
+}
 
-var AutorForm = React.createClass({
-	getInitialState: function() {
-		return {nome: '', email: '', senha: ''};
-	},
-
-	handleNomeChange: function(e) {
-		this.setState({nome: e.target.value});
-	},
-
-	handleEmailChange: function(e) {
-		this.setState({email: e.target.value});
-	},
-
-	handleSenhaChange: function(e) {
-		this.setState({senha: e.target.value});
-	},
+class AutorForm extends React.Component {
+	constructor(props) {
+		super(props);
+		this.state = {nome: '', email: '', senha: ''};
+		this.setNome = this.setNome.bind(this);
+		this.setEmail = this.setEmail.bind(this);
+		this.setSenha = this.setSenha.bind(this);
+		this.handleSubmit = this.handleSubmit.bind(this);
+	}
 	
-	handleAutorSubmit: function(autor){
+	setNome(e) {
+		this.setState({nome: e.target.value});
+	}
+
+	setEmail(e) {
+		this.setState({email: e.target.value});
+	}
+
+	setSenha(e) {
+		this.setState({senha: e.target.value});
+	}
+	
+	handleAutorSubmit(autor) {
 		$.ajax({
-				url: this.props.url,
-				contentType: 'application/json',
-				dataType: 'json',
-				type: 'POST',
-				data: JSON.stringify(autor),
-				success: function(data) {
-					PubSub.publish( 'update-autor-list', data );
-					PubSub.publish( 'clear-error', {});
-				}.bind(this),
-				error: function(response){
-					if(response.status == 400){
-						var errorHandler = ErrorHandler(JSON.parse(response.responseText));
-						errorHandler.publishErrors();						
-					}
+			url: this.props.url,
+			contentType: 'application/json',
+			dataType: 'json',
+			type: 'POST',
+			data: JSON.stringify(autor),
+			success: function(data) {
+				PubSub.publish( 'update-autor-list', data );
+				PubSub.publish( 'clear-error', {});
+			}.bind(this),
+			error: function(response){
+				if(response.status == 400){
+					var errorHandler = ErrorHandler(JSON.parse(response.responseText));
+					errorHandler.publishErrors();						
 				}
+			}
 		});  
-	},
-	handleSubmit: function(e) {
+	}
+	
+	handleSubmit(e) {
 		e.preventDefault();
-	    var nome = this.state.nome.trim();
-	    var email = this.state.email.trim();
+		var nome = this.state.nome.trim();
+		var email = this.state.email.trim();
 		var senha = this.state.senha.trim();
 		
-	    this.handleAutorSubmit({nome: nome, email: email, senha: senha});
-	    this.setState({nome: '', email: '', senha: ''});
-	},
-	render: function() {
-    return (
-      <div className="autorForm">
-			<form className="pure-form pure-form-aligned" onSubmit={this.handleSubmit}>
-				<CustomInputText id="nome" name="nome" label="Nome: " type="text" value={this.state.nome} placeholder="Nome do Autor" onChangeFunction={this.handleNomeChange} />
-				<CustomInputText id="email" name="email" label="Email: " type="text" value={this.state.email} placeholder="Email do Autor" onChangeFunction={this.handleEmailChange} />
-				<CustomInputText id="senha" name="senha" label="Senha: " type="password" value={this.state.senha} placeholder="Senha do Autor" onChangeFunction={this.handleSenhaChange}/>
-				<CustomSubmit label="Enviar" />
-			</form>			        
-      </div>
-    );
-  }
-});
+		this.handleAutorSubmit({nome: nome, email: email, senha: senha});
+		this.setState({nome: '', email: '', senha: ''});
+	}
+	
+	render() {
+		return (
+			<div className="autorForm">
+				<form className="pure-form pure-form-aligned" onSubmit={this.handleSubmit}>
+					<CustomInputText id="nome" name="nome" label="Nome: " type="text" value={this.state.nome} placeholder="Nome do Autor" onChangeFunction={this.setNome} />
+					<CustomInputText id="email" name="email" label="Email: " type="text" value={this.state.email} placeholder="Email do Autor" onChangeFunction={this.setEmail} />
+					<CustomInputText id="senha" name="senha" label="Senha: " type="password" value={this.state.senha} placeholder="Senha do Autor" onChangeFunction={this.setSenha}/>
+					<CustomSubmit label="Enviar" />
+				</form>			        
+			</div>
+		);
+	}
+} 
 
-
-var AutorTable = React.createClass({
-	render: function(){
+class AutorTable extends React.Component {
+	
+	render() {
 		var autorNodes = this.props.lista.map(function(autor){
 			return(
-					<tr key={autor.nome}>
-						<td>{autor.nome}</td>
-						<td>{autor.email}</td>
-					</tr>
-				);
-			}); 
-			return(
-					<table className="pure-table">
-					<thead>
-						<tr>
-							<th>Nome</th>
-							<th>email</th>
-						</tr>
-					</thead>
-					<tbody>
-						{autorNodes}
-					</tbody>
-				</table>
+				<tr key={autor.nome}>
+					<td>{autor.nome}</td>
+					<td>{autor.email}</td>
+				</tr>
 			);
+		}); 
+		return(
+			<table className="pure-table">
+				<thead>
+					<tr>
+						<th>Nome</th>
+						<th>email</th>
+					</tr>
+				</thead>
+				<tbody>
+					{autorNodes}
+				</tbody>
+			</table>
+		);
 	}
-});
+}
 
-var AutorBox = React.createClass({
-	getInitialState : function(){
-		return {lista : []};
-	},
-	componentDidMount: function() {
+class AutorBox extends React.Component {
+	constructor(props) {
+		super(props);
+		this.state = {lista : []};
+	}
+
+	componentDidMount() {
 		$.ajax({
-	      	url: this.props.url,
-		  	dataType: 'json',
-		  	success: function(data) {
-		  		this.setState({lista: data});
-		  	}.bind(this)
+			url: this.props.url,
+			dataType: 'json',
+			success: function(data) {
+				this.setState({lista: data});
+			}.bind(this)
 		});
-	},
+	}
 	
-	componentWillMount: function() {
+	componentWillMount() {
 		var react = this;
-		PubSub.subscribe( 'update-autor-list', function(topicName,data){
+		PubSub.subscribe('update-autor-list', function(topicName,data){
 			react.setState({lista:data});
 		});
-	},
-	
-	
-	render: function(){
-	return(
-		<div>
-			<AutorForm url="http://localhost:8080/api/autor"/>
-			<AutorTable lista={this.state.lista}/>
-		</div>
-	);
 	}
-});
 
+	render() {
+		return(
+			<div>
+				<AutorForm url="http://localhost:8080/api/autor"/>
+				<AutorTable lista={this.state.lista}/>
+			</div>
+		);
+	}
+} 
 
 ReactDOM.render(
   <AutorBox  url="http://localhost:8080/api/autor"/>,
