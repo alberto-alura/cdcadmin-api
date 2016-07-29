@@ -1,4 +1,4 @@
-var ErrorHandler = function(errorObject){
+export function ErrorHandler (errorObject){
 	return {
 		publishErrors : function() {
 			for(index in errorObject.errors){				
