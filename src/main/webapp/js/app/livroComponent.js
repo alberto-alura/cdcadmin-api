@@ -52,23 +52,21 @@ class LivroForm extends React.Component {
 		var titulo = this.state.titulo.trim();
 		var preco = this.state.preco.trim();
 		var autorId = this.state.autorId;
-		
-		this.handleAutorSubmit({titulo: titulo, preco: preco, autorId: autorId});
+		this.handleSubmit({titulo: titulo, preco: preco, autorId: autorId});
 		this.setState({titulo: '', preco: '', autorId: ''});
 	}
 	
 	render() {
-		console.log(this.props.autores);
 		var autores = this.props.autores.map(function(autor){
 			return <option key={autor.id} value={autor.id}>{autor.nome}</option>;
 		});
 		return (
 			<div className="autorForm">
-				<form className="pure-form pure-form-aligned" onSubmit={this.handleSubmit}>
+				<form className="pure-form pure-form-aligned" onSubmit={this.handleLivroSubmit}>
 					<CustomInputText id="titulo" name="titulo" label="Titulo: " type="text" value={this.state.titulo} placeholder="Titulo do livro" onChangeFunction={this.setTitulo} />
 					<CustomInputText id="preco" name="preco" label="Preco: " type="decimal" value={this.state.preco} placeholder="Preço do livro" onChangeFunction={this.setPreco} />
 					<div className="pure-controls">
-						<select value={this.state.autorId}>
+						<select value={this.state.autorId} name="autorId">
 							{autores}
 						</select>
 					</div>

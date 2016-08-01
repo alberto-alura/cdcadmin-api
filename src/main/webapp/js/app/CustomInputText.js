@@ -5,7 +5,6 @@ export class CustomInputText extends React.Component {
 	} 
 	
 	render() {
-		console.log("renderizando...");
 		return (
 			<div className="pure-control-group">
 				<label htmlFor={this.props.id}>{this.props.label}</label> 

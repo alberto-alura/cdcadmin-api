@@ -48,6 +48,7 @@ class AutorForm extends React.Component {
 	
 	handleSubmit(e) {
 		e.preventDefault();
+		console.log("enviando..");
 		var nome = this.state.nome.trim();
 		var email = this.state.email.trim();
 		var senha = this.state.senha.trim();

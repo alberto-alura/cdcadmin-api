@@ -8,6 +8,8 @@ import javax.persistence.Id;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class Autor {
 	
@@ -20,6 +22,7 @@ public class Autor {
 	@Email
 	private String email;
 	@NotBlank
+	@JsonIgnore
 	private String senha;
 	
 	public Integer getId() {
