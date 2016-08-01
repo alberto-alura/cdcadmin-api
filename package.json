@@ -1,0 +1,27 @@
+{
+  "name": "cdcreact",
+  "version": "1.0.0",
+  "description": "Aqui vai rolar um pequeno exemplo de crud usando o Spring MVC como framework web expondo a API e um client baseado no React  consumindo.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/asouza/cdc-crud-reactor.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/asouza/cdc-crud-reactor/issues"
+  },
+  "homepage": "https://github.com/asouza/cdc-crud-reactor#readme",
+  "devDependencies": {
+    "babel-cli": "^6.11.4",
+    "babel-preset-es2015": "^6.9.0",
+    "babel-preset-react": "^6.11.1",
+    "babelify": "^7.3.0",
+    "browserify": "^13.1.0",
+    "watchify": "^3.7.0"
+  }
+}
