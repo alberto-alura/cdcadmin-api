@@ -66,7 +66,8 @@ class LivroForm extends React.Component {
 					<CustomInputText id="titulo" name="titulo" label="Titulo: " type="text" value={this.state.titulo} placeholder="Titulo do livro" onChangeFunction={this.setTitulo} />
 					<CustomInputText id="preco" name="preco" label="Preco: " type="decimal" value={this.state.preco} placeholder="Preço do livro" onChangeFunction={this.setPreco} />
 					<div className="pure-controls">
-						<select value={this.state.autorId} name="autorId">
+						<select value={this.state.autorId} name="autorId" onChange={this.setAutorId}>
+							<option value="">Selecione</option>
 							{autores}
 						</select>
 					</div>
