@@ -23,5 +23,9 @@
     "babelify": "^7.3.0",
     "browserify": "^13.1.0",
     "watchify": "^3.7.0"
+  },
+  "dependencies": {
+    "react": "^15.3.0",
+    "react-router": "^2.6.1"
   }
 }

@@ -2,8 +2,6 @@ import {CustomInputText} from "./CustomInputText.js"
 import {CustomSubmit} from "./CustomSubmit.js"
 import {ErrorHandler} from "./ErrorHandler.js"
 
-
-
 class AutorForm extends React.Component {
 	constructor(props) {
 		super(props);
@@ -97,7 +95,7 @@ class AutorTable extends React.Component {
 	}
 }
 
-class AutorBox extends React.Component {
+export class AutorBox extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {lista : []};
@@ -105,7 +103,7 @@ class AutorBox extends React.Component {
 
 	componentDidMount() {
 		$.ajax({
-			url: this.props.url,
+			url: "/api/autor",
 			dataType: 'json',
 			success: function(data) {
 				this.setState({lista: data});
@@ -129,8 +127,3 @@ class AutorBox extends React.Component {
 		);
 	}
 } 
-
-ReactDOM.render(
-  <AutorBox  url="http://localhost:8080/api/autor"/>,
-  document.getElementById('content')
-);

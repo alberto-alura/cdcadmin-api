@@ -2,8 +2,6 @@ import {CustomInputText} from "./CustomInputText.js"
 import {CustomSubmit} from "./CustomSubmit.js"
 import {ErrorHandler} from "./ErrorHandler.js"
 
-
-
 class LivroForm extends React.Component {
 	constructor(props) {
 		super(props);
@@ -107,7 +105,7 @@ class LivroTable extends React.Component {
 	}
 }
 
-class LivroBox extends React.Component {
+export class LivroBox extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {lista : [],autores:[]};
@@ -115,7 +113,7 @@ class LivroBox extends React.Component {
 
 	componentDidMount() {
 		$.ajax({
-			url: this.props.urlListaLivros,
+			url: "/api/livros",
 			dataType: 'json',
 			success: function(data) {
 				this.setState({lista: data});
@@ -123,7 +121,7 @@ class LivroBox extends React.Component {
 		});
 		
 		$.ajax({
-			url: this.props.urlListaAutores,
+			url: "/api/autor",
 			dataType: 'json',
 			success: function(data) {
 				this.setState({autores: data});
@@ -147,8 +145,3 @@ class LivroBox extends React.Component {
 		);
 	}
 } 
-
-ReactDOM.render(
-  <LivroBox  urlListaLivros="/api/livros" urlListaAutores="/api/autor"/>,
-  document.getElementById('content')
-);
