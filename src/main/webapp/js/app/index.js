@@ -7,7 +7,7 @@ import {Home} from './Home.js'
 ReactDOM.render((
 	<Router history={browserHistory}>
     	<Route path="/index.html" component={App}>
-	    	<IndexRoute path="/index.html" component={{conteudo:Home}}/>
+	    	<IndexRoute component={{conteudo:Home}}/>
     		<Route path="/autor" component={{conteudo:AutorBox}}/>
     		<Route path="/livro" component={{conteudo:LivroBox}}/>
 		</Route>

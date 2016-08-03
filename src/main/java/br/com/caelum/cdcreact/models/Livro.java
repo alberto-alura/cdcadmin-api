@@ -52,4 +52,8 @@ public class Livro {
 		return autor;
 	}
 	
+	public Integer getId() {
+		return id;
+	}
+	
 }
