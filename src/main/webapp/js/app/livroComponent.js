@@ -138,9 +138,14 @@ export class LivroBox extends React.Component {
 
 	render() {
 		return(
-			<div>
-				<LivroForm url="http://localhost:8080/api/livros" autores={this.state.autores}/>
-				<LivroTable lista={this.state.lista}/>
+			<div id="main">
+				<div className="header">
+					<h1>Cadastro de Livros</h1>
+				</div>
+				<div className="content" id="content">
+					<LivroForm url="http://localhost:8080/api/livros" autores={this.state.autores}/>
+					<LivroTable lista={this.state.lista}/>
+				</div>
 			</div>
 		);
 	}

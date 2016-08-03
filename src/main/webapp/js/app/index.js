@@ -6,9 +6,9 @@ import {LivroBox} from './livroComponent.js'
 ReactDOM.render((
 	<Router history={browserHistory}>
     	<Route path="/index.html" component={App}>
-    		<Route path="/autor" component={AutorBox}/>
-    		<Route path="/livro" component={LivroBox}/>
+    		<Route path="/autor" component={{conteudo:AutorBox}}/>
+    		<Route path="/livro" component={{conteudo:LivroBox}}/>
 		</Route>
     </Router>
-), document.getElementById('menu'));
+), document.getElementById('react'));
 
