@@ -4,7 +4,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -18,6 +18,7 @@ import br.com.caelum.cdcreact.models.Livro;
 
 @RestController
 @RequestMapping("/api/livros")
+@CrossOrigin
 public class LivrosController {
 	
 	@Autowired
@@ -26,10 +27,10 @@ public class LivrosController {
 	private AutorDao autorDao;
 
 	@RequestMapping(consumes=MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.POST)
-	public ResponseEntity<?> salva(@Valid @RequestBody LivroForm livroForm) {
+	public Iterable<Livro> salva(@Valid @RequestBody LivroForm livroForm) {
 		livroDao.save(livroForm.build(autorDao));
 		
-		return ResponseEntity.status(302).header("Location", "/api/livros").build();
+		return lista();
 	}
 
 	@RequestMapping(method = RequestMethod.GET, produces=MediaType.APPLICATION_JSON_VALUE)
