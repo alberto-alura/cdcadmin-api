@@ -18,3 +18,4 @@ result.html
 springlint-result.html
 node_modules
 src/main/webapp/js/lib/*
+application-production.properties
