@@ -15,7 +15,7 @@ import br.com.caelum.cdcreact.daos.AutorDao;
 import br.com.caelum.cdcreact.models.Autor;
 
 @RestController
-@RequestMapping("/api/autor")
+@RequestMapping("/api/autores")
 @CrossOrigin
 public class AutorController {
 	
