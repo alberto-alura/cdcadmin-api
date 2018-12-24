@@ -1,0 +1,30 @@
+version: '3'
+services:
+
+  api:
+    build: .
+    image: alura/cdc-admin-api
+    restart: always
+    ports:
+      - 8080:8080
+    depends_on:
+      - database
+    networks:
+      - cdc-react-net
+
+  database:
+    image: mariadb:10.4
+    restart: always
+    environment:
+      - MYSQL_DATABASE=cdc_react
+      - MYSQL_ROOT_PASSWORD=admin
+    volumes:
+      - database-vol:/var/lib/mysql
+    networks:
+      - cdc-react-net
+
+volumes:
+  database-vol:
+
+networks:
+  cdc-react-net:
